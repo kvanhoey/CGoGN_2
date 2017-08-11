@@ -21,71 +21,21 @@
 *                                                                              *
 *******************************************************************************/
 
-#ifndef CGOGN_RENDERING_SHADER_COPY_DEPTH_H_
-#define CGOGN_RENDERING_SHADER_COPY_DEPTH_H_
+#define CGOGN_IO_2DM_IO_CPP_
 
-#include <cgogn/rendering/dll.h>
-#include <cgogn/rendering/shaders/shader_program.h>
-#include <cgogn/rendering/shaders/vbo.h>
-
-#include <QOpenGLFunctions>
-#include <QOpenGLTexture>
+#include <cgogn/io/2dm_io.h>
 
 namespace cgogn
 {
 
-namespace rendering
+namespace io
 {
 
-// forward
-class ShaderCopyDepth;
+template class CGOGN_IO_API SMS2DMSurfaceImport<CMap2, Eigen::Vector3d>;
+template class CGOGN_IO_API SMS2DMSurfaceImport<CMap2, Eigen::Vector3f>;
+template class CGOGN_IO_API SMS2DMSurfaceImport<CMap2, geometry::Vec_T<std::array<float64,3>>>;
+template class CGOGN_IO_API SMS2DMSurfaceImport<CMap2, geometry::Vec_T<std::array<float32,3>>>;
 
-
-
-class CGOGN_RENDERING_API ShaderParamCopyDepth : public ShaderParam
-{
-protected:
-	void set_uniforms() override;
-public:
-	using ShaderType = ShaderCopyDepth;
-	QOpenGLTexture* texture_;
-	GLuint depth_texture_sampler_;
-	ShaderParamCopyDepth(ShaderCopyDepth* sh);
-};
-
-
-class CGOGN_RENDERING_API ShaderCopyDepth : public ShaderProgram
-{
-	friend class ShaderParamCopyDepth;
-
-protected:
-
-	static const char* vertex_shader_source_;
-	static const char* fragment_shader_source_;
-
-	// uniform ids
-	GLint unif_depth_texture_sampler_;
-
-public:
-
-	using Self = ShaderCopyDepth;
-	CGOGN_NOT_COPYABLE_NOR_MOVABLE(ShaderCopyDepth);
-
-	void set_depth_sampler(GLuint depth_samp);
-
-	using Param = ShaderParamCopyDepth;
-
-	static std::unique_ptr<Param> generate_param();
-
-private:
-
-	ShaderCopyDepth();
-	static ShaderCopyDepth* instance_;
-
-};
-
-} // namespace rendering
+} // namespace io
 
 } // namespace cgogn
-
-#endif // CGOGN_RENDERING_SHADER_COPY_DEPTH_H_
